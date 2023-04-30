@@ -9,14 +9,18 @@ def extract_csv(folder_direct_in,file_name,sep_str=';',index_column_num=None):
     col_names=pd.read_csv(file_direct_in,
                         encoding="utf-8",
                         sep=sep_str,
-                        nrows=0).columns
+                        nrows=0,
+                        index_col=index_column_num
+                        ).columns
     types_dict = {col: str for col in list(col_names)}
 
     data_out = pd.read_csv(
                         file_direct_in,
                     encoding="utf-8",
                     sep=sep_str,
-                    dtype=types_dict)
+                    dtype=types_dict,
+                    index_col= index_column_num,
+                    )
     print("Dimensiones:",data_out.shape)
     print(f"Columnas \n {', '.join(col_names)}")
     return data_out
