@@ -165,11 +165,11 @@ def group_by_col(df,list_group_in,col_id):
             .sort_values(by = "count_reg",ascending= False)
     return df_out
 
-def df_groupby_subtotal(df_in,list_group_in):
-    g_df_t= (df_in[["id_vuelo"]
+def df_groupby_subtotal(df_in,list_group_in,id_ref):
+    g_df_t= (df_in[[id_ref]
                 +list_group_in[:len(list_group_in)-1]]
             .groupby(list_group_in[:len(list_group_in)-1]).count())
-    g_df = df_in[["id_vuelo"]+list_group_in
+    g_df = df_in[[id_ref]+list_group_in
                  ].groupby(list_group_in).count()
     g_df = pd.merge(left=g_df.reset_index(),
                     right=g_df_t.reset_index(),
@@ -178,8 +178,8 @@ def df_groupby_subtotal(df_in,list_group_in):
                     right_on=list_group_in[:len(list_group_in)-1]
                     )
     g_df= g_df.rename(columns={
-                "id_vuelo_x": "subtotal",
-                "id_vuelo_y": "total",
+                f"{id_ref}_x": "subtotal",
+                f"{id_ref}_y": "total",
                 })
     g_df["porcentaje en %"] =  np.round(g_df["subtotal"]/g_df["total"] *100,2)
     g_df =\
